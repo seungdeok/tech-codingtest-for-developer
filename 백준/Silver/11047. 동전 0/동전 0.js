@@ -1,24 +1,29 @@
-// Q1. Array.join()
+// 23.12.27 22:17 ~
+// https://www.acmicpc.net/problem/11047
+// Greedy
 
-// 1. Define input value using fs module
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+const filename =
+  process.platform === "linux" ? "/dev/stdin" : "./test-input.txt";
+const input = require("fs")
+  .readFileSync(filename)
+  .toString()
+  .trim()
+  .split("\n");
 
-// 2. Define n, k 
-const [n, k] = input[0].split(" ").map(Number);
+let [N, K] = input.shift().split(" ").map(Number);
+let sum = K;
 
-// 3. Repeat n, Calculate quotient and reminder
-let sum = 0;
-let reminder = k;
+let answer = 0;
+for (const value of input.reverse()) {
+  const amount = Number(value);
 
-for (let i = n; i >= 1; i--) {
-    if (reminder !== 0) {
-        const quitient = parseInt(reminder / Number(input[i]));
-        sum += quitient;
-        reminder -= Number(input[i]) * quitient;
-    } else {
-        break;
-    }
+  if (sum > 0) {
+    const share = parseInt(sum / amount);
+    answer += share;
+    sum -= share * amount;
+  } else {
+    break;
+  }
 }
 
-// 4. Print sum of min quotients
-console.log(sum);
+console.log(answer);
