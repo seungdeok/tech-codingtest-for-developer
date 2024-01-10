@@ -1,24 +1,25 @@
-const fs = require("fs");
-const input = fs.readFileSync("/dev/stdin").toString().split("\n");
+// 24.1.10 11:21 ~ 11:41
+// https://www.acmicpc.net/problem/18870
 
-const n = Number(input[0]);
+const filename =
+  process.platform === "linux" ? "/dev/stdin" : "./test-input.txt";
+const input = require("fs")
+  .readFileSync(filename)
+  .toString()
+  .trim()
+  .split("\n");
 
-const arr = input[1].split(" ").map(Number);
-
-function compare(a, b) {
-    return a - b;
-};
-
-const sortedArr = [...new Set(arr)].sort(compare);
+const list = input[1].split(" ").map(Number);
+const arr = [...new Set(list)].sort((a, b) => a - b);
 
 const map = new Map();
-for (let i = 0; i < sortedArr.length; i++) {
-    map.set(sortedArr[i], i);
+for (let i = 0; i < arr.length; i++) {
+  map.set(arr[i], i);
 }
 
 const answer = [];
-for (item of arr) {
-    answer.push(map.get(item));
+for (let i = 0; i < list.length; i++) {
+  answer.push(map.get(list[i]));
 }
 
 console.log(answer.join(" "));
