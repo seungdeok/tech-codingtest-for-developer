@@ -1,42 +1,27 @@
-// 2초 128MB
-// 23.06.19
-// 09:59 ~
+// 24.1.24
+// https://www.acmicpc.net/problem/1654
+// 이진탐색
 
 const input = require("fs")
-  .readFileSync(
-    process.platform === "linux" ? "/dev/stdin" : "./test-input.txt"
-  )
+  .readFileSync(process.platform === "linux" ? "/dev/stdin" : "test-input.txt")
   .toString()
   .trim()
   .split("\n");
-const [K, N] = input[0].split(" ").map(Number);
 
-function binarySearch(arr, target) {
-  let start = 1;
-  let end = Math.max(...arr);
+const [K, N] = input.shift().split(" ").map(Number);
+const list = input.map(Number);
 
-  while (start <= end) {
-    const mid = parseInt((start + end) / 2);
-    let n = 0;
-    for (const cur of arr) {
-      n += parseInt(cur / mid);
-    }
+let min = 1;
+let max = Math.max(...list);
 
-    if (n >= target) {
-      // return mid;
-      start = mid + 1;
-    } else if (n < target) {
-      end = mid - 1;
-    }
-    // else if (n > target) {
-    //   start = mid + 1;
-    // }
-  }
+while (min <= max) {
+  const mid = Math.floor((min + max) / 2);
+  const cnt = list
+    .map((line) => parseInt(line / mid))
+    .reduce((cur, acc) => cur + acc, 0);
 
-  return parseInt((start + end) / 2);
+  if (cnt >= N) min = mid + 1;
+  else max = mid - 1;
 }
 
-const arr = input.slice(1).map(Number);
-const maxLen = binarySearch(arr, N);
-
-console.log(maxLen);
+console.log(max);
