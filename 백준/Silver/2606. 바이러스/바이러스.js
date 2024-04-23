@@ -1,33 +1,32 @@
-// 1초 / 128MB
-// 23.06.01
-// 15:47 ~ 15:55
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
-
-const n = +input[0];
-const link = +input[1];
-
-const graph = Array.from(Array(n + 1), () => []);
-for (let i = 2; i <= link + 1; i++) {
-  const [src, dest] = input[i].split(" ").map(Number);
-  graph[src].push(dest);
-  graph[dest].push(src);
+const n = Number(input[0]);
+const m = Number(input[1]);
+const graph = [];
+for (let i = 1; i <= n; i++) graph[i] = [];
+for (let i = 2; i < 2 + m; i++) {
+  const [s, e] = input[i].split(" ").map(Number);
+  graph[s].push(e);
+  graph[e].push(s);
 }
 
-let visited = Array(n + 1).fill(false);
+let answer = 0;
+const visited = new Array(n + 1).fill(false);
 
-let cnt = 0;
-
-function dfs(start) {
-  visited[start] = true;
-  cnt++;
-
-  for (let v of graph[start]) {
-    if (!visited[v]) {
-      dfs(v);
-    }
+function dfs(g, v, i) {
+  v[i] = true;
+  answer++;
+  for (let node of graph[i]) {
+    if (!v[node]) dfs(g, v, node);
   }
 }
 
-dfs(1);
-console.log(cnt - 1);
+dfs(graph, visited, 1);
+
+console.log(answer - 1);
