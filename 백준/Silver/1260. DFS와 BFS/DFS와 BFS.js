@@ -1,63 +1,68 @@
-// 2초 / 128MB
-// 23.06.13
+/**
+ * 1260. DFS와 BFS
+ * https://www.acmicpc.net/problem/1260
+ */
 
 const input = require("fs")
-  .readFileSync("/dev/stdin")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
   .toString()
   .trim()
   .split("\n");
 
-const [n, m, v] = input[0].split(" ").map(Number);
+const [N, M, V] = input[0].split(" ").map(Number);
+const graph = Array.from(Array(N + 1), () => Array());
 
-const list = Array.from({ length: n + 1 }, () => []);
-for (let i = 1; i <= m; i++) {
-  const [src, dest] = input[i].split(" ").map(Number);
-
-  list[src].push(dest);
-  list[dest].push(src);
+for (let i = 1; i <= M; i++) {
+  const [start, end] = input[i].split(" ").map(Number);
+  graph[start].push(end);
+  graph[end].push(start);
 }
 
-for (const edge of list) {
-  edge.sort((a, b) => a - b);
+for (let i = 1; i <= N; i++) {
+  graph[i].sort((a, b) => a - b);
 }
 
-let visitedDFS = Array().fill(false);
-let dfsPaths = [];
+const visitedDFS = Array(N + 1).fill(false);
+const dfsResult = [];
 
 function dfs(start) {
   visitedDFS[start] = true;
-  dfsPaths.push(start);
+  dfsResult.push(start);
 
-  for (const next of list[start]) {
-    if (next && !visitedDFS[next]) {
+  for (let i = 0; i < graph[start].length; i++) {
+    const next = graph[start][i];
+    if (!visitedDFS[next]) {
       dfs(next);
     }
   }
 }
 
-let visitedBFS = Array().fill(false);
-let bfsPaths = [];
+dfs(V);
+console.log(dfsResult.join(" "));
+
+const visitedBFS = Array(N + 1).fill(false);
+const bfsResult = [];
 
 function bfs(start) {
   const queue = [start];
-  bfsPaths.push(start);
+  bfsResult.push(start);
 
-  while (queue.length) {
-    const cur = queue.shift();
-    visitedBFS[cur] = true;
+  while (queue.length > 0) {
+    const current = queue.shift();
+    visitedBFS[current] = true;
 
-    for (const next of list[cur]) {
+    for (let i = 0; i < graph[current].length; i++) {
+      const next = graph[current][i];
       if (!visitedBFS[next]) {
-        visitedBFS[next] = true;
         queue.push(next);
-        bfsPaths.push(next);
+        bfsResult.push(next);
+        visitedBFS[next] = true;
       }
     }
   }
 }
 
-dfs(v);
-console.log(dfsPaths.join(" "));
-
-bfs(v);
-console.log(bfsPaths.join(" "));
+bfs(V);
+console.log(bfsResult.join(" "));
