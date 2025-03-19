@@ -3,16 +3,17 @@
  * @return {boolean}
  */
 var containsDuplicate = function(nums) {
-    let isDuplicate = false;
-    const map = {};
+    if (nums.length < 2) return false;
 
-    nums.forEach((num) => {
-        if (map[num]) {
-            isDuplicate = true;
-            return;
-        }
-        map[num] = true;
-    })
+    const obj = {};
 
-    return isDuplicate;
+    for (const num of nums) {
+        obj[num] = (obj[num] || 0) + 1;
+    }
+
+    for (const num of Object.values(obj)) {
+        if (Number(num) > 1) return true;
+    }
+
+    return false;
 };
