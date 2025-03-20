@@ -3,20 +3,20 @@
  * @return {number[]}
  */
 var productExceptSelf = function(nums) {
-    const answer = new Array(nums.length).fill(1);
+    const answer = new Array(nums.length);
     
-    let leftProduct = 1;
-    // left
+    let prefix = 1;
     for (let i = 0; i < nums.length; i++) {
-        answer[i] = leftProduct;
-        leftProduct *= nums[i];
+        answer[i] = prefix;
+        prefix *= nums[i];
     }
+
+    console.log(answer);
     
-    let rightProduct = 1;
-    // right
+    let postfix = 1;
     for (let i = nums.length - 1; i >= 0; i--) {
-        answer[i] *= rightProduct;
-        rightProduct *= nums[i];
+        answer[i] *= postfix;
+        postfix *= nums[i];
     }
     
     return answer;
