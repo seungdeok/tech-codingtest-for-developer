@@ -3,13 +3,8 @@
  * @return {number}
  */
 var maxSubArray = function(nums) {
-    let max = 0;
-    let answer = -10000;
-
-    for (const num of nums) {
-        max = Math.max(max + num, num);
-        answer = Math.max(answer, max);
+    for(let i = 1; i < nums.length; i++){
+       nums[i] = Math.max(nums[i], nums[i] + nums[i-1]);
     }
-
-    return answer;
+    return Math.max(...nums);
 };
