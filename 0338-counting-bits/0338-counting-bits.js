@@ -1,11 +1,21 @@
+function count(numStr) {
+    let cnt = 0;
+
+    for (const str of numStr) {
+        if (str === '1') cnt++;
+    }
+
+    return cnt;
+}
+
 /**
  * @param {number} n
  * @return {number[]}
  */
 var countBits = function(n) {
-    const answer = new Array(n + 1).fill(0);
+    const answer = [];
     for (let i = 0; i <= n; i++) {
-        answer[i] = answer[i >> 1] + (i & 1);
+        answer.push(count(i.toString(2)));
     }
 
     return answer;
