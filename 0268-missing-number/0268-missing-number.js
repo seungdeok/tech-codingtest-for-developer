@@ -3,14 +3,18 @@
  * @return {number}
  */
 var missingNumber = function(nums) {
-    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    nums.sort();
 
-    let answer = 0;
+    let cnt = 0;
 
-    for (let i = 0; i < nums.length; i++) {
-        if (answer !== nums[i]) return answer;
-        answer++;
+    for(const num of nums) {
+        if (cnt !== num) {
+            break;
+        }
+
+        cnt++;
     }
 
-    return answer;
+    return cnt;
 };
