@@ -3,13 +3,12 @@
  * @return {number}
  */
 var hammingWeight = function(n) {
-    
-    let answer = 0;
-    const bin = n.toString(2);
+    const bitString = n.toString(2);
 
-    for (let i = 0; i < bin.length; i++) {
-        if (bin[i] === '1') answer++; 
+    let cnt = 0;
+    for (const bit of bitString) {
+        if (bit === "1") cnt++;
     }
 
-    return answer;
+    return cnt;
 };
