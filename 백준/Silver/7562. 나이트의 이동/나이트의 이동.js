@@ -1,56 +1,50 @@
-// 2초 128MB
-// 23.6.30
-// 09:23 ~
+/**
+ * https://www.acmicpc.net/problem/7562
+ */
 
 const input = require("fs")
   .readFileSync(
-    process.platform === "linux" ? "/dev/stdin" : "./test-input.txt"
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
   )
   .toString()
   .trim()
   .split("\n");
 
-let testCases = +input[0];
+const T = Number(input[0]);
 
-let idx = 1;
+let index = 1;
 
-const dy = [2, 1, -1, -2, -2, -1, 1, 2];
-const dx = [1, 2, 2, 1, -1, -2, -2, -1];
+for (let i = 1; i <= T; i++) {
+  const L = Number(input[index]);
+  const [startY, startX] = input[index + 1].split(" ").map(Number);
+  const [targetY, targetX] = input[index + 2].split(" ").map(Number);
 
-function bfs(max, cur, next, visited) {
-  const queue = [[...cur, 0]];
-  // let cnt = 0;
+  function BFS() {
+    const queue = [[startY, startX, 0]];
+    const dy = [2, 1, -1, -2, -2, -1, 1, 2];
+    const dx = [1, 2, 2, 1, -1, -2, -2, -1];
+    const visited = Array.from({ length: L }, () => Array(L).fill(false));
+    visited[startY][startX] = true;
 
-  while (queue.length) {
-    const [curX, curY, cnt] = queue.shift();
-    const [nextX, nextY] = next;
-    visited[curY][curX] = true;
+    while (queue.length) {
+      const [curY, curX, answer] = queue.shift();
 
-    if (curX === nextX && curY === nextY) {
-      return cnt;
-    }
+      if (curY === targetY && curX === targetX) {
+        return answer;
+      }
 
-    for (let i = 0; i < 8; i++) {
-      const sy = dy[i] + curY;
-      const sx = dx[i] + curX;
+      for (let i = 0; i < 8; i++) {
+        const [ny, nx] = [curY + dy[i], curX + dx[i]];
 
-      if (sy >= 0 && sx >= 0 && sy < max && sx < max && !visited[sy][sx]) {
-        visited[sy][sx] = true;
-        queue.push([sx, sy, cnt + 1]);
+        if (ny >= 0 && ny < L && nx >= 0 && nx < L && !visited[ny][nx]) {
+          visited[ny][nx] = true;
+          queue.push([ny, nx, answer + 1]);
+        }
       }
     }
   }
 
-  return cnt;
-}
+  console.log(BFS());
 
-while (testCases > 0) {
-  const I = input[idx];
-  const cur = input[idx + 1].split(" ").map(Number);
-  const target = input[idx + 2].split(" ").map(Number);
-  const visited = Array.from({ length: I }, () => Array(I).fill(false));
-  console.log(bfs(I, cur, target, visited));
-
-  idx += 3;
-  testCases--;
+  index += 3;
 }
