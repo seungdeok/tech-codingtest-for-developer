@@ -1,12 +1,13 @@
 function solution(clothes) {
     const map = new Map();
-    let answer = 1;
     
-    for (let [name, type] of clothes) {
+    for (const [name, type] of clothes) {
         map.set(type, (map.get(type) || 0) + 1);
     }
+
+    let answer = 1;
     
-    for (let [key, value] of map.entries()) {
+    for (const value of map.values()) {
         answer *= (value + 1);
     }
     
