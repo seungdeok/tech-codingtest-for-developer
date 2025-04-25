@@ -1,29 +1,26 @@
-// 23.12.27 22:17 ~
-// https://www.acmicpc.net/problem/11047
-// Greedy
+/**
+ * https://www.acmicpc.net/problem/11047
+ */
 
-const filename =
-  process.platform === "linux" ? "/dev/stdin" : "./test-input.txt";
 const input = require("fs")
-  .readFileSync(filename)
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
   .toString()
   .trim()
   .split("\n");
 
-let [N, K] = input.shift().split(" ").map(Number);
-let sum = K;
+const [N, K] = input[0].split(" ").map(Number);
+const coins = input.slice(1).map(Number);
 
-let answer = 0;
-for (const value of input.reverse()) {
-  const amount = Number(value);
+let count = 0;
+let remaining = K;
 
-  if (sum > 0) {
-    const share = parseInt(sum / amount);
-    answer += share;
-    sum -= share * amount;
-  } else {
-    break;
+for (let i = N - 1; i >= 0; i--) {
+  if (remaining >= coins[i]) {
+    count += Math.floor(remaining / coins[i]);
+    remaining %= coins[i];
   }
 }
 
-console.log(answer);
+console.log(count);
