@@ -1,48 +1,56 @@
-// 1초 / 512MB
-// 23.06.01
-// 16:09 ~ 16:54
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+const T = Number(input.shift());
 
-const testCases = +input[0];
+let idx = 0;
 
-let line = 1;
+for (let i = 0; i < T; i++) {
+  const [M, N, K] = input[idx].split(" ").map(Number);
 
-function dfs(graph, n, m, start, end) {
-  if (start < 0 || end < 0 || start >= n || end >= m) {
-    return false;
+  const map = Array.from(Array(N), () => Array(M).fill(0));
+
+  for (let j = idx + 1; j < idx + K + 1; j++) {
+    const [x, y] = input[j].split(" ").map(Number);
+    map[y][x] = 1;
   }
 
-  if (graph[start][end] === 1) {
-    graph[start][end] = 0;
+  const visited = Array.from(Array(N), () => Array(M).fill(false));
 
-    dfs(graph, n, m, start, end + 1);
-    dfs(graph, n, m, start, end - 1);
-    dfs(graph, n, m, start + 1, end);
-    dfs(graph, n, m, start - 1, end);
-
-    return true;
-  }
-
-  return false;
-}
-
-for (let i = 0; i < testCases; i++) {
-  let [m, n, k] = input[line].split(" ").map(Number);
-
-  let graph = Array.from(Array(n), () => Array(m).fill(0));
-  for (let i = 1; i <= k; i++) {
-    let [y, x] = input[line + i].split(" ").map(Number);
-    graph[x][y] = 1;
-  }
+  const dx = [0, 0, -1, 1];
+  const dy = [-1, 1, 0, 0];
 
   let answer = 0;
-  for (let idx = 0; idx < n; idx++) {
-    for (let jdx = 0; jdx < m; jdx++) {
-      if (dfs(graph, n, m, idx, jdx)) answer++;
+
+  function DFS(x, y) {
+    visited[x][y] = true;
+
+    for (let i = 0; i < 4; i++) {
+      const nx = x + dx[i];
+      const ny = y + dy[i];
+
+      if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
+      if (map[nx][ny] === 1 && !visited[nx][ny]) {
+        DFS(nx, ny);
+      }
     }
   }
 
-  line += k + 1;
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < M; j++) {
+      if (map[i][j] === 1 && !visited[i][j]) {
+        DFS(i, j);
+        answer++;
+      }
+    }
+  }
+
   console.log(answer);
+
+  idx += K + 1;
 }
