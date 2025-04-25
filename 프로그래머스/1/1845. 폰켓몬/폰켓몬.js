@@ -1,6 +1,6 @@
 function solution(nums) {
     const max = Math.floor(nums.length / 2);
-    const arr = [...new Set(nums)];
+    const uniqueNums = [...new Set(nums)];
     
-    return arr.length > max ? max : arr.length;
+    return Math.min(uniqueNums.length, max);
 }
