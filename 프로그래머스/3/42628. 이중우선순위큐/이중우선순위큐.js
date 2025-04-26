@@ -9,9 +9,9 @@ function solution(operations) {
             answer.push(num);
             answer.sort((a, b) => a - b);
         } else if (command === "D" && num === -1) {
-            answer.shift();
+            answer.shift(); // 최솟값
         } else if (command === "D" && num === 1) {
-            answer.pop();
+            answer.pop(); // 최댓값
         } 
     }
     
