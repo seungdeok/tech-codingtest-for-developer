@@ -1,12 +1,13 @@
 function solution(citations) {
-    citations.sort((a , b) => b - a);
-    let answer = 0;
+    citations.sort((a, b) => b - a);
+    
+    let h = 0;
     
     for (const citation of citations) {
-        if (answer < citation) {
-            answer++
+        if (h < citation) {
+            h++;
         }
     }
     
-    return answer;
+    return h;
 }
