@@ -3,15 +3,19 @@ function solution(people, limit) {
     
     people.sort((a, b) => a - b);
     
-    while (people.length) {
-        if (people[0] + people.at(-1) <= limit) {
-            people.shift();
-            people.pop();
+    let left = 0;
+    let right = people.length - 1;
+    
+    while (left <= right) {
+        if (people[left] + people[right] <= limit) {
+            left++;
+            right--;
             answer++;
         } else {
-            people.pop();
+            right--;
             answer++;
         }
     }
+    
     return answer;
 }
