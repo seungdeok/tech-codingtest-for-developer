@@ -1,23 +1,26 @@
 function solution(N, number) {
-    if (N === number) return 1;
+    const dp = Array.from({ length: 9 }, () => new Set());
+    dp[1].add(N);
     
-    const numberArr = [new Set()];
-    for (let i = 1; i < 9; i++) {
-        numberArr.push(new Set([Number(String(N).repeat(i))]));
-    }
-    
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i <= 8; i++) {
+        dp[i].add(Number(String(N).repeat(i)));
         for (let j = 1; j < i; j++) {
-            for (const num1 of numberArr[j]) {
-                for (const num2 of numberArr[i - j]) {
-                    numberArr[i].add(num1 + num2);
-                    numberArr[i].add(num1 - num2);    
-                    numberArr[i].add(num1 * num2);    
-                    numberArr[i].add(num1 / num2);
+            for (const num1 of dp[j]) {
+                for (const num2 of dp[i - j]) {
+                    dp[i].add(num1 + num2);
+                    dp[i].add(num1 * num2);
+                    if (num1 > num2) {
+                        dp[i].add(num1 - num2);    
+                    }
+                    if (num2 > 0) {
+                        dp[i].add(Math.floor(num1 / num2));    
+                    }
                 }
             }
         }
-        if (numberArr[i].has(number)) return i;
+        if (dp[i].has(number)) {
+            return i;
+        }
     }
     
     return -1;
