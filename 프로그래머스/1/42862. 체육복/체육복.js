@@ -1,11 +1,11 @@
 function solution(n, lost, reserve) {
     const losts = lost
-    .filter((num) => !reserve.includes(num))
-    .sort((a, b) => a - b);
+        .filter((num) => !reserve.includes(num))
+        .sort((a, b) => a - b);
 
-  const reserves = reserve
-    .filter((num) => !lost.includes(num))
-    .sort((a, b) => a - b);
+    const reserves = reserve
+        .filter((num) => !lost.includes(num))
+        .sort((a, b) => a - b);
     
     const cnt = losts.filter((a) => {
         return reserves.find((b, i) => {
