@@ -1,0 +1,7 @@
+-- 코드를 입력하세요
+-- ANIMAL_INS 테이블
+-- 가장 최근에 들어온 동물의 DATETIME
+SELECT DATETIME AS 시간
+FROM ANIMAL_INS
+ORDER BY DATETIME DESC
+LIMIT 1;
