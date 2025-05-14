@@ -3,16 +3,12 @@
  * @return {number}
  */
 var climbStairs = function(n) {
-    const answer = new Array(46).fill(0);
-    answer[1] = 1;
-    answer[2] = 2;
-    answer[3] = 3;
-
-    if (n < 3) return answer[n];
-
-    for (let i = 4; i <= n; i++) {
-        answer[i] = answer[i - 1] + answer[i - 2];
+    const dp = Array(n + 1).fill(0);
+    dp[1] = 1;
+    dp[2] = 2;
+    for (let i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
     }
 
-    return answer[n];
+    return dp[n];
 };
