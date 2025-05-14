@@ -1,18 +1,14 @@
-
-
 function solution(numbers, target) {
     let answer = 0;
     
-    function dfs(depth, sum) {
-        if (depth === numbers.length) {
-            if (sum === target) {
-                answer++;
-            }
+    function dfs(index, sum) {
+        if (index === numbers.length) {
+            if (sum === target) answer++;
             return;
         }
         
-        dfs(depth + 1, sum + numbers[depth]);
-        dfs(depth + 1, sum - numbers[depth]);
+        dfs(index + 1, sum + numbers[index]);
+        dfs(index + 1, sum - numbers[index]);
     }
     
     dfs(0, 0);
