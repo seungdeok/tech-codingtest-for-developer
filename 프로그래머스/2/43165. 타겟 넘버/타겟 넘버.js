@@ -1,14 +1,14 @@
 function solution(numbers, target) {
     let answer = 0;
     
-    function dfs(index, sum) {
-        if (index === numbers.length) {
+    function dfs(level, sum) {
+        if (level === numbers.length) {
             if (sum === target) answer++;
             return;
         }
         
-        dfs(index + 1, sum + numbers[index]);
-        dfs(index + 1, sum - numbers[index]);
+        dfs(level + 1, sum + numbers[level]);
+        dfs(level + 1, sum - numbers[level]);
     }
     
     dfs(0, 0);
