@@ -3,7 +3,9 @@ function solution(numbers, target) {
     
     function dfs(level, sum) {
         if (level === numbers.length) {
-            if (sum === target) answer++;
+            if (sum === target) {
+                answer++;
+            }
             return;
         }
         
