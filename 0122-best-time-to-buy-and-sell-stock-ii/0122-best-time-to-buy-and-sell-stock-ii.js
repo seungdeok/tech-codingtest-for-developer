@@ -5,11 +5,11 @@
 var maxProfit = function(prices) {
     let answer = 0;
 
-    for (let i = 1; i < prices.length; i++) {
-        if (prices[i - 1] < prices[i]) {
-            answer += prices[i] - prices[i - 1];
+    for(let i =0 ; i<prices.length - 1; i++) {
+        if (prices[i + 1] > prices[i]) {
+            answer += prices[i + 1] - prices[i];
         }
     }
-
+    
     return answer;
 };
