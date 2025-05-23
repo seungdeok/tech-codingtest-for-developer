@@ -3,31 +3,32 @@
  * @return {number}
  */
 var numIslands = function(grid) {
+    // 1 = land, 0 = water
+    
     const m = grid.length;
     const n = grid[0].length;
-    const visited = Array.from({ length: m }, () => Array(n).fill(false));
-    
-    // top, right, bottom, left
-    const dx = [0, 1, 0, -1];
-    const dy = [1, 0, -1, 0];
 
-    function dfs(x, y) {
-        if (x < 0 || x >= m || y < 0 || y >= n || visited[x][y] || grid[x][y] === "0") return;
+    const dr = [1, 0, -1, 0];
+    const dc = [0, 1, 0, -1];
 
-        visited[x][y] = true;
+    function dfs(r, c) {
+        grid[r][c] = '0';
 
         for (let i = 0; i < 4; i++) {
-            const nx = x + dx[i];
-            const ny = y + dy[i];
-            dfs(nx, ny);
-        } 
+            const nr = r + dr[i];
+            const nc = c + dc[i];
+
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] === '1') {
+                dfs(nr, nc);
+            }
+        }
     }
 
+    
     let answer = 0;
-
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
-            if (grid[i][j] === "1" && !visited[i][j]) {
+            if (grid[i][j] === '1') {
                 dfs(i, j);
                 answer++;
             }
