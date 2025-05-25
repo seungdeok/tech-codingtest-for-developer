@@ -13,19 +13,18 @@ const input = require("fs")
 const [N, M] = input[0].split(" ").map(Number);
 const answer = [];
 
-function backtrack(depth, arr) {
-  if (depth === M) {
+function backtracking(arr) {
+  if (arr.length === M) {
     answer.push(arr.join(" "));
     return;
   }
 
   for (let i = 1; i <= N; i++) {
     arr.push(i);
-    backtrack(depth + 1, arr);
+    backtracking(arr);
     arr.pop();
   }
 }
 
-backtrack(0, []);
-
+backtracking([]);
 console.log(answer.join("\n"));
