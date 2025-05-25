@@ -1,22 +1,31 @@
-const input = require('fs').readFileSync("/dev/stdin").toString().split("\n");
+/**
+ * https://www.acmicpc.net/problem/15651
+ */
 
-const [n, m] = input[0].split(" ").map(Number);
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-let answer = '';
-const output = [];
-let visited = new Array(n).fill(false);
+const [N, M] = input[0].split(" ").map(Number);
+const answer = [];
 
-function dfs(depth, start) {
-    if (depth === m) {
-        answer += `${output.join(" ")}\n`;
-        return;
-    }
-    for (let i = start; i < n; i++) {
-        output.push(i + 1);
-        dfs(depth + 1, 0);
-        output.pop();
-    }
+function backtrack(depth, arr) {
+  if (depth === M) {
+    answer.push(arr.join(" "));
+    return;
+  }
+
+  for (let i = 1; i <= N; i++) {
+    arr.push(i);
+    backtrack(depth + 1, arr);
+    arr.pop();
+  }
 }
 
-dfs(0, 0);
-console.log(answer.trim());
+backtrack(0, []);
+
+console.log(answer.join("\n"));
