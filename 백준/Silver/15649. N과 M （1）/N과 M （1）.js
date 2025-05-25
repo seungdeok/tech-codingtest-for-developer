@@ -1,29 +1,36 @@
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+/**
+ * https://www.acmicpc.net/problem/15649
+ */
 
-const [n, m] = input[0].split(" ").map(Number);
-let visitedArr = new Array(n).fill(false);
-const output = [];
-let result = '';
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-function dfs(depth) {
-    if (depth === m) {
-        result += output.join(" ") + "\n";
-        return;
+const [N, M] = input[0].split(" ").map(Number);
+const visited = Array(N + 1).fill(false);
+
+const answer = [];
+
+function backtracking(arr, visited) {
+  if (arr.length === M) {
+    answer.push(arr.join(" "));
+    return;
+  }
+
+  for (let i = 1; i <= N; i++) {
+    if (!visited[i]) {
+      visited[i] = true;
+      arr.push(i);
+      backtracking(arr, visited);
+      arr.pop();
+      visited[i] = false;
     }
-    for (let i = 0; i < n; i++) {
-        if (!visitedArr[i]) {
-            visitedArr[i] = true;
-            output.push(i + 1);
-            dfs(depth + 1);
-            visitedArr[i] = false;
-            output.pop();
-        }
-    }
+  }
 }
 
-function solution() {
-    dfs(0);
-    console.log(result.trim());
-}
-
-solution();
+backtracking([], visited);
+console.log(answer.join("\n"));
