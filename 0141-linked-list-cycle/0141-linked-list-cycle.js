@@ -11,15 +11,16 @@
  * @return {boolean}
  */
 var hasCycle = function(head) {
-    const map = new Map();
+    const visited = new Set();
+    let cur = head;
 
-    while (head) {
-        if (!map.has(head)) {
-            map.set(head, true);
-            head = head.next;
-        } else {
+    while (cur) {
+        if (visited.has(cur)) {
             return true;
         }
+        
+        visited.add(cur);
+        cur = cur.next
     }
 
     return false;
