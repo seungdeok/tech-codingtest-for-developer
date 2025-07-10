@@ -1,24 +1,27 @@
-const input = require("fs")
-    .readFileSync("/dev/stdin")
-    .toString()
-    .split("\n");
+/**
+ * https://www.acmicpc.net/problem/11441
+ */
 
-const n = +input[0];
-const m = +input[2];
-
-const arr = input[1].split(" ").map(Number);
+const [N, arr, M, ...input] = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
 let sum = 0;
-const answer = [0];
-
-for (let num of arr) {
-    sum += num;
-    answer.push(sum);
+const prefixSum = [0];
+const numArr = arr.split(" ").map(Number);
+for (const num of numArr) {
+  sum += num;
+  prefixSum.push(sum);
 }
 
-let output = '';
-for (let i = 3; i <= m + 2; i++) {
-    const [s, e] = input[i].split(" ").map(Number);
-    output += `${answer[e] - answer[s - 1]}\n`;
+const answer = [];
+for (const item of input) {
+  const [left, right] = item.split(" ").map(Number);
+  answer.push(prefixSum[right] - prefixSum[left - 1]);
 }
-console.log(output);
+
+console.log(answer.join("\n"));
