@@ -1,21 +1,22 @@
-// Q1. 공백이 있을 수 있는가?
+/**
+ * https://www.acmicpc.net/problem/1541
+ */
 
-// 1. Define input value using module fs
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-// 2. Divide Groups by "-"
-const groups = input[0].split("-");
+const arr = input[0].split("-");
 
-// 3. Caluate each groups and Sum groups
-const arr = groups.map((groups) => {
-    const item = groups.split("+").map(Number);
-    return item.reduce((acc, cur) => acc + cur);
-});
-
-let sum = arr[0];
-for (let i = 1; i < arr.length; i++) {
-   sum -= arr[i]; 
+let answer = 0;
+for (let i = 0; i < arr.length; i++) {
+  const sum = arr[i].split("+").reduce((acc, cur) => acc + Number(cur), 0);
+  if (i === 0) answer += sum;
+  else answer -= sum;
 }
 
-// 4. Print
-console.log(sum);
+console.log(answer);
