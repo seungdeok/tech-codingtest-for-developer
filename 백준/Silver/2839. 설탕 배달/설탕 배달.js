@@ -1,21 +1,24 @@
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+/**
+ * https://www.acmicpc.net/problem/2839
+ */
 
-// Define total weight
-let weight = Number(input[0]);
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-let count = 0;
+let N = +input[0];
+let answer = -1;
 
-while (true) {
-  if (weight % 5 === 0) {
-    console.log(weight / 5 + count);
+for (let i = parseInt(N / 5); i >= 0; i--) {
+  let sum = N - i * 5;
+
+  if (sum % 3 === 0) {
+    answer = i + sum / 3;
     break;
   }
-    
-  if (0 > weight) {
-    console.log(-1);
-    break;
-  }
-
-  count++;
-  weight -= 3;
 }
+console.log(answer);
