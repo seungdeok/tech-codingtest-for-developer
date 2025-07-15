@@ -1,30 +1,37 @@
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+/**
+ * https://www.acmicpc.net/problem/2512
+ */
 
-const n = +input[0];
-const regions = input[1].split(" ").map(Number).sort((a, b) => a - b);
-const total = +input[2];
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-let start = 0;
-let end = regions.reduce((acc, cur) => Math.max(acc, cur));
-let result = 0;
+const N = +input[0];
+const arr = input[1].split(" ").map(Number);
+const M = +input[2];
+
+let start = 1;
+let end = Math.max(...arr);
+
+let answer = 0;
 
 while (start <= end) {
-    let mid = parseInt((start + end) / 2);
-    let amount = 0;
-    
-    for (let v of regions) {
-        amount += Math.min(mid, v);
-    }
-    
-    if (total === amount) {
-        result = mid;
-        break;
-    } else if (total > amount) {
-        result = mid;
-        start = mid + 1;
-    } else {
-        end = mid - 1;
-    }
+  const mid = parseInt((start + end) / 2);
+  let total = 0;
+  for (const num of arr) {
+    total += Math.min(mid, num);
+  }
+
+  if (total <= M) {
+    answer = mid;
+    start = mid + 1;
+  } else {
+    end = mid - 1;
+  }
 }
 
-console.log(result);
+console.log(answer);
