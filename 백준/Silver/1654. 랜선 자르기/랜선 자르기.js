@@ -1,27 +1,37 @@
-// 24.1.24
-// https://www.acmicpc.net/problem/1654
-// 이진탐색
+/**
+ * https://www.acmicpc.net/problem/1654
+ */
 
 const input = require("fs")
-  .readFileSync(process.platform === "linux" ? "/dev/stdin" : "test-input.txt")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
   .toString()
   .trim()
   .split("\n");
 
-const [K, N] = input.shift().split(" ").map(Number);
-const list = input.map(Number);
+const [K, N] = input[0].split(" ").map(Number);
+const lines = input.slice(1).map((line) => +line);
 
-let min = 1;
-let max = Math.max(...list);
+let start = 1;
+let end = Math.max(...lines);
 
-while (min <= max) {
-  const mid = Math.floor((min + max) / 2);
-  const cnt = list
-    .map((line) => parseInt(line / mid))
-    .reduce((cur, acc) => cur + acc, 0);
+let answer = 0;
 
-  if (cnt >= N) min = mid + 1;
-  else max = mid - 1;
+while (start <= end) {
+  const mid = Math.floor((start + end) / 2);
+
+  let total = 0;
+  for (const line of lines) {
+    total += Math.floor(line / mid);
+  }
+
+  if (total >= N) {
+    answer = mid;
+    start = mid + 1;
+  } else {
+    end = mid - 1;
+  }
 }
 
-console.log(max);
+console.log(answer);
