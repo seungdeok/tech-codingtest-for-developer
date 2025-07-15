@@ -1,28 +1,29 @@
-// 24.1.1 23:46 ~
-// https://www.acmicpc.net/problem/10816
-// 정렬
+/**
+ * https://www.acmicpc.net/problem/10816
+ */
 
-const filename =
-  process.platform === "linux" ? "/dev/stdin" : "./test-input.txt";
 const input = require("fs")
-  .readFileSync(filename)
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
   .toString()
   .trim()
   .split("\n");
 
-const map = {};
+const N = +input[0];
+const arr = input[1].split(" ").map(Number);
 
-for (const value of input[1].split(" ")) {
-  if (map[value]) {
-    map[value] += 1;
-  } else {
-    map[value] = 1;
-  }
+const map = new Map();
+for (const num of arr) {
+  map.set(num, (map.get(num) || 0) + 1);
 }
 
-let answer = [];
-for (const value of input[3].split(" ")) {
-  answer.push(map[value] ?? 0);
+const M = +input[2];
+const cards = input[3].split(" ").map(Number);
+
+const answer = [];
+for (const num of cards) {
+  answer.push(map.get(num) || 0);
 }
 
 console.log(answer.join(" "));
