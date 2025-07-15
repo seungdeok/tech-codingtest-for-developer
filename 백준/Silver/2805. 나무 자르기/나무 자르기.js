@@ -1,30 +1,37 @@
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
-const [n, m] = input[0].split(" ").map(Number);
-const arr = input[1].split(" ").map(Number);
+/**
+ * https://www.acmicpc.net/problem/2805
+ */
+
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
+
+const [N, M] = input[0].split(" ").map(Number);
+const heights = input[1].split(" ").map(Number);
 
 let start = 0;
-let end = arr.reduce((acc, cur) => Math.max(acc, cur));
+let end = Math.max(...heights);
+
 let answer = 0;
 
 while (start <= end) {
-    let mid = parseInt((start + end) / 2);
-    let total = 0;
-    
-    for (let v of arr) {
-        if (v > mid) {
-            total += v - mid;
-        }
-    }
-    
-    if (m === total) {
-        answer = mid;
-        break;
-    } else if (m > total) {
-        end = mid - 1;
-    } else {
-        answer = mid;
-        start = mid + 1;
-    }
+  const mid = Math.floor((start + end) / 2);
+
+  let total = 0;
+  for (const height of heights) {
+    total += Math.max(height - mid, 0);
+  }
+
+  if (total >= M) {
+    answer = mid;
+    start = mid + 1;
+  } else {
+    end = mid - 1;
+  }
 }
 
 console.log(answer);
