@@ -1,3 +1,7 @@
+/**
+ * https://www.acmicpc.net/problem/1012
+ */
+
 const input = require("fs")
   .readFileSync(
     process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
@@ -6,51 +10,49 @@ const input = require("fs")
   .trim()
   .split("\n");
 
-const T = Number(input.shift());
+const T = +input[0];
 
-let idx = 0;
+for (let i = 0, j = 1; i < T; i++) {
+  const [M, N, K] = input[j].split(" ").map(Number);
 
-for (let i = 0; i < T; i++) {
-  const [M, N, K] = input[idx].split(" ").map(Number);
+  const arr = Array.from({ length: M }, () =>
+    Array.from({ length: N }, () => 0)
+  );
 
-  const map = Array.from(Array(N), () => Array(M).fill(0));
-
-  for (let j = idx + 1; j < idx + K + 1; j++) {
-    const [x, y] = input[j].split(" ").map(Number);
-    map[y][x] = 1;
+  for (let l = j + 1; l <= j + K; l++) {
+    const [row, col] = input[l].split(" ").map(Number);
+    arr[row][col] = 1;
   }
 
-  const visited = Array.from(Array(N), () => Array(M).fill(false));
+  function dfs(r, c) {
+    arr[r][c] = -1;
 
-  const dx = [0, 0, -1, 1];
-  const dy = [-1, 1, 0, 0];
-
-  let answer = 0;
-
-  function DFS(x, y) {
-    visited[x][y] = true;
-
-    for (let i = 0; i < 4; i++) {
-      const nx = x + dx[i];
-      const ny = y + dy[i];
-
-      if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
-      if (map[nx][ny] === 1 && !visited[nx][ny]) {
-        DFS(nx, ny);
+    for (const [dr, dc] of [
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0],
+    ]) {
+      const nr = r + dr;
+      const nc = c + dc;
+      if (nr >= 0 && nr < M && nc >= 0 && nc < N && arr[nr][nc] === 1) {
+        arr[nr][nc] = -1;
+        dfs(nr, nc);
       }
     }
   }
 
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < M; j++) {
-      if (map[i][j] === 1 && !visited[i][j]) {
-        DFS(i, j);
+  let answer = 0;
+
+  for (let x = 0; x < M; x++) {
+    for (let y = 0; y < N; y++) {
+      if (arr[x][y] === 1) {
+        dfs(x, y);
         answer++;
       }
     }
   }
 
   console.log(answer);
-
-  idx += K + 1;
+  j += K + 1;
 }
