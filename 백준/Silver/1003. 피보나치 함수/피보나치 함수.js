@@ -1,22 +1,29 @@
-// 0.25초 / 128MB
-// 23.06.01
-// 14:09 ~ 14:52
+/**
+ * https://www.acmicpc.net/problem/1003
+ *
+ */
 
-const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+const input = require("fs")
+  .readFileSync(
+    process.platform === "linux" ? "/dev/stdin" : __dirname + "/test-input.txt"
+  )
+  .toString()
+  .trim()
+  .split("\n");
 
-const n = +input[0];
+const T = +input[0];
 
-const dp = Array.from({ length: 41 }, () => 0);
+const dp = Array(41).fill(0);
+dp[0] = 0;
 dp[1] = 1;
-dp[2] = 1;
 
-for (let i = 3; i <= 40; i++) {
+for (let i = 2; i <= 40; i++) {
   dp[i] = dp[i - 1] + dp[i - 2];
 }
 
-for (let i = 1; i <= n; i++) {
-  const testCase = +input[i];
+for (let i = 1; i <= T; i++) {
+  const N = +input[i];
 
-  if (testCase === 0) console.log("1 0");
-  else console.log(`${dp[testCase - 1]} ${dp[testCase]}`);
+  if (N === 0) console.log("1 0");
+  else console.log(`${dp[N - 1]} ${dp[N]}`);
 }
