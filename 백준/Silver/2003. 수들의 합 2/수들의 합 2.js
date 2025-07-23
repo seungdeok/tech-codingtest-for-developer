@@ -13,12 +13,10 @@ const input = require("fs")
 const [N, M] = input[0].split(" ").map(Number);
 const arr = input[1].split(" ").map(Number);
 
-let start = 0;
-let end = 0;
 let sum = 0;
 let answer = 0;
 
-for (let start = 0; start < N; start++) {
+for (let start = 0, end = 0; start < N; start++) {
   while (end < N && sum < M) {
     sum += arr[end];
     end++;
